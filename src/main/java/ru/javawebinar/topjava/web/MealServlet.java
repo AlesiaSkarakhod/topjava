@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import ru.javawebinar.topjava.dao.MealDao;
 import ru.javawebinar.topjava.dao.MealDaoImpl;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletConfig;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -22,9 +24,9 @@ public class MealServlet extends HttpServlet {
 
     private static final Logger log = getLogger(UserServlet.class);
 
-    private final static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a");
-    private final static String CHANGE_MEAL = "/changeMeal.jsp";
-    private final static String LIST_MEALS = "/meals.jsp";
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private static final String CHANGE_MEAL = "/changeMeal.jsp";
+    private static final String LIST_MEALS = "/meals.jsp";
 
     private MealDao mealDao;
 
@@ -32,27 +34,32 @@ public class MealServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         log.debug("Init MealServlet");
         super.init(config);
-        mealDao = MealDaoImpl.getInstance();
+        mealDao = new MealDaoImpl();
+    }
+
+    private Long getId(HttpServletRequest req) {
+        return Long.parseLong(req.getParameter("Id"));
+    }
+
+    private List<MealTo> filteredMeals() {
+        return MealsUtil.filteredByStreams(mealDao.getAll(), LocalTime.MIN, LocalTime.MAX, 2000);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         log.debug("redirect to meals.jsp");
-
         String action = req.getParameter("action");
 
         if (action != null) {
             switch (action) {
                 case "delete":
-                    Long idDel = Long.parseLong(req.getParameter("Id"));
-                    mealDao.delete(idDel);
+                    mealDao.delete(getId(req));
                     req.setAttribute("dateTimeFormatter", dateTimeFormatter);
-                    req.setAttribute("listMealsDynamic", MealsUtil.filteredByStreams(mealDao.getAll(), LocalTime.MIN, LocalTime.MAX, 2000));
+                    req.setAttribute("listMealsDynamic", filteredMeals());
                     req.getRequestDispatcher(LIST_MEALS).forward(req, resp);
                 case "change":
-                    Long idAdd = Long.parseLong(req.getParameter("Id"));
-                    Meal meal = mealDao.getMealById(idAdd);
+                    MealTo meal = MealsUtil.createTo(mealDao.getMealById(getId(req)), true);
                     req.setAttribute("meal", meal);
                     req.getRequestDispatcher(CHANGE_MEAL).forward(req, resp);
                     break;
@@ -62,7 +69,7 @@ public class MealServlet extends HttpServlet {
 
         } else {
             req.setAttribute("dateTimeFormatter", dateTimeFormatter);
-            req.setAttribute("listMealsDynamic", MealsUtil.filteredByStreams(mealDao.getAll(), LocalTime.MIN, LocalTime.MAX, 2000));
+            req.setAttribute("listMealsDynamic", filteredMeals());
             req.getRequestDispatcher(LIST_MEALS).forward(req, resp);
         }
     }

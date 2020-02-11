@@ -5,25 +5,20 @@ import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 public class MealDaoImpl implements MealDao {
 
-    private final Map<Long, Meal> meals;
+    private ConcurrentMap<Long, Meal> meals;
     private final AtomicLong counter = new AtomicLong();
-    private static MealDaoImpl mealDaoImpl;
 
-    public static MealDaoImpl getInstance() {
-        if (mealDaoImpl == null) {
-            mealDaoImpl = new MealDaoImpl();
-        }
-        return mealDaoImpl;
-    }
-
-    private MealDaoImpl() {
-        meals = new ConcurrentHashMap<>(MealsUtil.generateMap());
+    public MealDaoImpl() {
+        meals = new ConcurrentHashMap(MealsUtil.generatedList().stream()
+                .collect(Collectors.toMap(Meal::getId, meal -> meal)));
+        counter.set(meals.size());
     }
 
     private Long getGenerateId() {

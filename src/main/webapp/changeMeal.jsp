@@ -8,7 +8,7 @@
 <body>
 <h1><a href="index.html">Home</a></h1>
 <hr>
-<h2>Create meal</h2>
+<h2>Create/update meal</h2>
 
 <form method="POST" action='meals?action=change' name="frmChangeMeal">
     <table>
