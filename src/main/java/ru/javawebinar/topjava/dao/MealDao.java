@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MealDao {
 
-    Meal getMealById(Long idMeal);
+    Meal getMealById(Long mealId);
 
     List<Meal> getAll();
 
