@@ -6,8 +6,18 @@
     <title>Meals</title>
 </head>
 <style>
-    tr, th, td {
-        border: 1px solid black;
+    table {
+        border: 1px solid black; /* Рамка вокруг таблицы */
+        border-collapse: collapse; /* Отображать только одинарные линии */
+    }
+    th {
+        text-align: left; /* Выравнивание по левому краю */
+        padding: 5px; /* Поля вокруг содержимого ячеек */
+        border: 1px solid black; /* Граница вокруг ячеек */
+    }
+    td {
+        padding: 5px; /* Поля вокруг содержимого ячеек */
+        border: 1px solid black; /* Граница вокруг ячеек */
     }
 </style>
 <body>

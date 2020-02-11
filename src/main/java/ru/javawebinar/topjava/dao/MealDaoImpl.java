@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.LongAdder;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class MealDaoImpl implements MealDao {
 
-    private final  Map<Long, Meal> meals;
-    private final  LongAdder counter = new LongAdder();
+    private final Map<Long, Meal> meals;
+    private final AtomicLong counter = new AtomicLong();
     private static MealDaoImpl mealDaoImpl;
 
     public static MealDaoImpl getInstance() {
@@ -26,11 +26,15 @@ public class MealDaoImpl implements MealDao {
         meals = new ConcurrentHashMap<>(MealsUtil.generateMap());
     }
 
+    private Long getGenerateId() {
+        return counter.incrementAndGet();
+    }
+
     @Override
     public Meal getMealById(Long mealId) {
         Meal meal = meals.get(mealId);
         if (meal == null) {
-            throw new RuntimeException("Meal with id " + mealId +" not found");
+            throw new RuntimeException("Meal with id " + mealId + " not found");
         }
         return meal;
     }
@@ -42,9 +46,9 @@ public class MealDaoImpl implements MealDao {
 
     @Override
     public void create(Meal meal) {
-        counter.increment();
-        meals.put(counter.sum(),
-                new Meal(counter.sum(),
+        Long id = getGenerateId();
+        meals.put(id,
+                new Meal(id,
                         meal.getDateTime(),
                         meal.getDescription(),
                         meal.getCalories()));
