@@ -36,7 +36,6 @@
 <table>
     <tbody>
     <tr>
-        <th>Id</th>
         <th>Data</th>
         <th>Description</th>
         <th>Calories</th>
@@ -44,7 +43,6 @@
     </tr>
     <c:forEach items="${requestScope.listMealsDynamic}" var="meal">
     <tr style="color: ${meal.excess? 'red': 'green'}">
-        <td><c:out value="${meal.id}"></c:out></td>
         <td><c:out value="${requestScope.dateTimeFormatter.format(meal.dateTime)}"></c:out></td>
         <td><c:out value="${meal.description}"></c:out></td>
         <td><c:out value="${meal.calories}"></c:out></td>
@@ -52,7 +50,7 @@
         <td><a href="meals?action=delete&Id=${meal.id}">Delete</a></td>
     </tr>
     </c:forEach>
-    <th id="create" colspan="6"><a href="meals?action=create">Create meal</a></th>
+    <th id="create" colspan="5"><a href="meals?action=create">Create meal</a></th>
 </table>
 </body>
 </html>

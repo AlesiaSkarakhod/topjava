@@ -8,7 +8,7 @@
 <body>
 <h1><a href="index.html">Home</a></h1>
 <hr>
-<h2>Create/update meal</h2>
+<h2>Meal</h2>
 
 <form method="POST" action='meals?action=change' name="frmChangeMeal">
     <table>
@@ -19,7 +19,7 @@
             <th>Calories :</th>
         </tr>
 
-        <tr style="color: ${meal.excess? 'red': 'green'}">
+        <tr style="color: ${meals? 'red': 'green'}">
             <td><input type="datetime-local" name="dateTime"
                        value="${requestScope.meal!=null?requestScope.meal.dateTime:''}"/></td>
             <td><input type="text" name="description"

@@ -22,7 +22,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
 
-    private static final Logger log = getLogger(UserServlet.class);
+    private static final Logger log = getLogger(MealServlet.class);
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private static final String CHANGE_MEAL = "/changeMeal.jsp";
@@ -63,11 +63,13 @@ public class MealServlet extends HttpServlet {
                 resp.sendRedirect("meals");
                 break;
             case "change":
-                MealTo meal = MealsUtil.createTo(mealDao.getMealById(getId(req)), true);
+                Meal meal = mealDao.getMealById(getId(req));
                 req.setAttribute("meal", meal);
                 req.getRequestDispatcher(CHANGE_MEAL).forward(req, resp);
                 break;
             case "create":
+                Meal mealNew = new Meal();
+                req.setAttribute("meal", mealNew);
                 req.getRequestDispatcher(CHANGE_MEAL).forward(req, resp);
                 break;
             default:
