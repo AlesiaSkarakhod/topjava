@@ -50,27 +50,29 @@ public class MealServlet extends HttpServlet {
 
         log.debug("redirect to meals.jsp");
         String action = req.getParameter("action");
-
-        if (action != null) {
-            switch (action) {
-                case "delete":
-                    mealDao.delete(getId(req));
-                    req.setAttribute("dateTimeFormatter", dateTimeFormatter);
-                    req.setAttribute("listMealsDynamic", filteredMeals());
-                    req.getRequestDispatcher(LIST_MEALS).forward(req, resp);
-                case "change":
-                    MealTo meal = MealsUtil.createTo(mealDao.getMealById(getId(req)), true);
-                    req.setAttribute("meal", meal);
-                    req.getRequestDispatcher(CHANGE_MEAL).forward(req, resp);
-                    break;
-                case "create":
-                    req.getRequestDispatcher(CHANGE_MEAL).forward(req, resp);
-            }
-
-        } else {
+        if (action == null || action.isEmpty()) {
             req.setAttribute("dateTimeFormatter", dateTimeFormatter);
             req.setAttribute("listMealsDynamic", filteredMeals());
             req.getRequestDispatcher(LIST_MEALS).forward(req, resp);
+            return;
+        }
+
+        switch (action) {
+            case "delete":
+                mealDao.delete(getId(req));
+                resp.sendRedirect("meals");
+                break;
+            case "change":
+                MealTo meal = MealsUtil.createTo(mealDao.getMealById(getId(req)), true);
+                req.setAttribute("meal", meal);
+                req.getRequestDispatcher(CHANGE_MEAL).forward(req, resp);
+                break;
+            case "create":
+                req.getRequestDispatcher(CHANGE_MEAL).forward(req, resp);
+                break;
+            default:
+                resp.sendRedirect("meals");
+                break;
         }
     }
 
