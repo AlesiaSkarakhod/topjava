@@ -38,6 +38,7 @@ public class MealServlet extends HttpServlet {
     @Override
     public void destroy() {
         appCtx.close();
+        super.destroy();
     }
 
     @Override
@@ -55,19 +56,14 @@ public class MealServlet extends HttpServlet {
             return;
         }
 
-        Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id), null,
+
+        Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        mealController.create(meal);
-        if (meal.isNew()) {
-            mealController.create(meal);
-        } else {
-            mealController.update(meal, Integer.parseInt(id));
-        }
-
+        mealController.update(meal, Integer.parseInt(id));
         response.sendRedirect("meals");
     }
 
@@ -85,7 +81,7 @@ public class MealServlet extends HttpServlet {
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
-                        new Meal(authUserId(), LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
+                        new Meal(authUserId(), null, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
                         mealController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
