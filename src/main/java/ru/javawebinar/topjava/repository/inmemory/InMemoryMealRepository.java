@@ -29,13 +29,13 @@ public class InMemoryMealRepository implements MealRepository {
     public Meal save(Meal meal, int userId) {
         log.info("save meal: " + meal);
 
-            if (meal.isNew()) {
-                meal.setId(counter.incrementAndGet());
-                repository.put(meal.getId(), meal);
-                return meal;
-            }
-            // handle case: update, but not present in storage
-            if (getAll(userId).stream().anyMatch(m -> m.getId().equals(meal.getId()))) {
+        if (meal.isNew()) {
+            meal.setId(counter.incrementAndGet());
+            repository.put(meal.getId(), meal);
+            return meal;
+        }
+        // handle case: update, but not present in storage
+        if (getAll(userId).stream().anyMatch(m -> m.getId().equals(meal.getId()))) {
             return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
         }
         return null;
@@ -60,7 +60,7 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public List<Meal> getAll(Integer userId) {
+    public List<Meal> getAll(int userId) {
         log.info("getAll with userId= " + userId);
         return repository.values().stream()
                 .filter(meal -> meal.getUserId() == userId)

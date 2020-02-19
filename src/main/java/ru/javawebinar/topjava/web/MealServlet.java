@@ -26,12 +26,13 @@ import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
-    private ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+    private ConfigurableApplicationContext appCtx;
     private MealRestController mealController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
         mealController = appCtx.getBean(MealRestController.class);
     }
 

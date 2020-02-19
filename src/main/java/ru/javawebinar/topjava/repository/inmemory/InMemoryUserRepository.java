@@ -27,7 +27,6 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        if (user == null) return null;
         log.info("save {}", user);
         // new
         if (user.isNew()) {
@@ -36,7 +35,10 @@ public class InMemoryUserRepository implements UserRepository {
             return user;
         }
         // handle case: update, but not present in storage
+        if (getAll().contains(user)) {
             return repository.computeIfPresent(user.getId(), (id, oldUser) -> user);
+        }
+        return null;
     }
 
     @Override
@@ -65,6 +67,6 @@ public class InMemoryUserRepository implements UserRepository {
                 .values()
                 .stream()
                 .filter(user -> user.getEmail().equals(email))
-                .collect(Collectors.toList()).get(0);
+                .findFirst().orElse(null);
     }
 }

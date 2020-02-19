@@ -13,6 +13,6 @@ public interface MealRepository {
     // null if not found
     Meal get(int id, int userId);
 
-    List<Meal> getAll(Integer userId);
+    List<Meal> getAll(int userId);
 
 }
