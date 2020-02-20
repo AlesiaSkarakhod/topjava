@@ -35,7 +35,6 @@ public class MealRestController {
     public void update(Meal meal, int id) {
         log.info("create meal (MealRestController): " + meal);
         assureIdConsistent(meal, id);
-        assureIdConsistent(meal, id);
         service.update(meal, authUserId());
     }
 
