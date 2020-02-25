@@ -15,7 +15,7 @@ public class MealTestData {
     public static final Meal MEAL_USER_1 = new Meal(START_SEQ + 2, of(2020, Month.FEBRUARY, 22, 8, 10), "breakfast", 500);
     public static final Meal MEAL_USER_2 = new Meal(START_SEQ + 3, of(2020, Month.FEBRUARY, 23, 13, 0), "lunch", 700);
     public static final Meal MEAL_USER_3 = new Meal(START_SEQ + 4, of(2020, Month.FEBRUARY, 24, 20, 20), "dinner", 350);
-    public static final Meal MEAL_ADMIN_4 = new Meal(START_SEQ + 5, of(2020, Month.FEBRUARY, 22, 9, 10), "breakfast", 1000);
+    public static final Meal MEAL_USER_4 = new Meal(START_SEQ + 5, of(2020, Month.FEBRUARY, 22, 9, 10), "breakfast", 1000);
     public static final Meal MEAL_ADMIN_1 = new Meal(START_SEQ + 6, of(2020, Month.FEBRUARY, 23, 13, 20), "lunch", 700);
     public static final Meal MEAL_ADMIN_2 = new Meal(START_SEQ + 7, of(2020, Month.FEBRUARY, 24, 16, 10), "dinner", 500);
     public static final Meal MEAL_ADMIN_3 = new Meal(START_SEQ + 8, of(2020, Month.FEBRUARY, 24, 22, 15), "evening meal", 150);
