@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -36,7 +37,6 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 public class MealServiceTest {
 
     private static final Logger log = LoggerFactory.getLogger(SpringJUnit4ClassRunner.class);
-    private static StringBuilder logResult = new StringBuilder("\nResult log: \n");
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -47,7 +47,6 @@ public class MealServiceTest {
         protected void finished(long nanos, Description description) {
             String logMethod = "Name method: " + description.getMethodName() + "; time = "+ TimeUnit.NANOSECONDS.toMillis(nanos) +" ms";
             log.info(logMethod);
-            logResult.append(logMethod).append("\n");
         }
     };
 
@@ -55,11 +54,6 @@ public class MealServiceTest {
     private MealService service;
     @Autowired
     private MealRepository repository;
-
-    @AfterClass
-    public static void after() {
-        log.info(logResult.toString());
-    }
 
     @Test
     public void delete() throws Exception {
