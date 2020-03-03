@@ -15,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
@@ -38,6 +37,13 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 public class MealServiceTest {
 
     private static final Logger log = LoggerFactory.getLogger(SpringJUnit4ClassRunner.class);
+    private static StringBuilder sb = new StringBuilder();
+
+
+    @Autowired
+    private MealService service;
+    @Autowired
+    private MealRepository repository;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -46,15 +52,15 @@ public class MealServiceTest {
     public Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
-            String logMethod = "Name method: " + description.getMethodName() + "; time = "+ TimeUnit.NANOSECONDS.toMillis(nanos) +" ms";
-            log.info(logMethod);
+            String logMethod = "Name method: " + description.getMethodName() + "; time = "+ TimeUnit.NANOSECONDS.toMillis(nanos) +" ms;";
+            sb.append("\n").append(logMethod);
         }
     };
 
-    @Autowired
-    private MealService service;
-    @Autowired
-    private MealRepository repository;
+    @AfterClass
+    public static void after() {
+        log.info(sb.toString());
+    }
 
     @Test
     public void delete() throws Exception {
