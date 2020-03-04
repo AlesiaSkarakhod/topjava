@@ -52,8 +52,9 @@ public class MealServiceTest {
     public Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
-            String logMethod = "Name method: " + description.getMethodName() + "; time = "+ TimeUnit.NANOSECONDS.toMillis(nanos) +" ms;";
-            sb.append("\n").append(logMethod);
+            String logMethod = "Name method: " + description.getMethodName() + "; time = " + TimeUnit.NANOSECONDS.toMillis(nanos) + " ms;";
+            log.info("\n\t" + logMethod);
+            sb.append("\n\t").append(logMethod);
         }
     };
 
