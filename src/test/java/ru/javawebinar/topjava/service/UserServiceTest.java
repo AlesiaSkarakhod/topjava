@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
@@ -33,6 +34,7 @@ public class UserServiceTest {
 
     @Autowired
     private UserService service;
+    @Qualifier("dataJpaUserRepository")
     @Autowired
     private UserRepository repository;
 
